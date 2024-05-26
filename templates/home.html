@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <h1>Questify - App Home</h1>
+    <p>Click on the icons to navigate the app!</p>
+    
+    <h2>Upload a Video</h2>
+    <form action="{{ url_for('upload_video') }}" method="post" enctype="multipart/form-data">
+        <input type="file" name="video">
+        <button type="submit">Upload Video</button>
+    </form>
+{% endblock %}

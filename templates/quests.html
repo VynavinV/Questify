@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Quests{% endblock %}
+
+{% block content %}
+    <h1>Quests</h1>
+    <ul id="quests-list">
+        {% for i, quest in enumerate(quests) %}
+            <li>
+                {% if quest == "COMPLETED!" %}
+                    <p>{{ quest }}</p>
+                {% else %}
+                    <p>{{ quest }}</p>
+                    <form class="quest-form" data-index="{{ i }}" method="POST">
+                        {% for j in range(3) %}
+                            <input type="text" name="blank{{ j }}" placeholder="Fill in the blank">
+                        {% endfor %}
+                        <button type="submit">Submit</button>
+                    </form>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const forms = document.querySelectorAll('.quest-form');
+            forms.forEach(form => {
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const formData = new FormData(this);
+                    const questIndex = this.getAttribute('data-index');
+                    fetch(`/validate_quest/${questIndex}`, {
+                        method: 'POST',
+                        body: formData,
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.result == 'correct') {
+                            alert('Correct!');
+                            location.reload();
+                        } else  {
+                            alert(data.result)
+                            alert('Incorrect, please try again.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                });
+            });
+        });
+    </script>
+{% endblock %}

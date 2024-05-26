@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Shorts{% endblock %}
+
+{% block content %}
+    <h1>Shorts</h1>
+    <div id="shorts-container">
+        {% if shorts %}
+            {% for video in shorts %}
+                <video class="shorts-video" controls muted>
+                    <source src="{{ url_for('static', filename='videos/' ~ video) }}" type="video/mp4">
+                </video>
+            {% endfor %}
+        {% else %}
+            <p>No shorts available.</p>
+        {% endif %}
+    </div>
+{% endblock %}
